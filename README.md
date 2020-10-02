@@ -1,6 +1,6 @@
 # Upload folder to BunnyCDN Storage
 
-The script requires [PHP](https://www.php.net/downloads.php) 7.2/7.3/7.4 and [composer](https://getcomposer.org/download/)
+The script requires [PHP](https://www.php.net/downloads.php) 7.2+ and [composer](https://getcomposer.org/download/)
 
 Tested on PHP 7.4 (Windows & Linux)
 

@@ -1,5 +1,6 @@
 {
     "require": {
+        "php": "^7.2.5 || ^8.0",
         "symfony/finder": "^5.1",
         "symfony/http-client": "5.1.x-dev",
         "monolog/monolog": "^2.1",
@@ -9,11 +10,5 @@
         "psr-4": {
             "App\\": "src/"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/symfony/http-client"
-        }
-    ]
+    }
 }
