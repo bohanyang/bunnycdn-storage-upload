@@ -2,7 +2,7 @@
     "require": {
         "php": "^7.2.5 || ^8.0",
         "symfony/finder": "^5.1",
-        "symfony/http-client": "5.1.x-dev",
+        "symfony/http-client": "^5.1",
         "monolog/monolog": "^2.1",
         "thecodingmachine/safe": "^1.1"
     },
