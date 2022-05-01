@@ -14,7 +14,7 @@ $localRoot = $argv[2];
 
 $queue = [];
 $queueCount = 0;
-$transfers = 48;
+$transfers = 32;
 
 $listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, $browser, &$queueCount) {
     foreach ($items as $item) {
@@ -22,7 +22,11 @@ $listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $trans
             $listUrls($item->children());
         } elseif ($item instanceof File) {
             $localPath = $localRoot . $item->relativePath();
-            if (file_exists($localPath) && filesize($localPath) === $item->size()) {
+            if (
+                file_exists($localPath) 
+                && filesize($localPath) === $item->size() 
+                && strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256()
+            ) {
                 continue;
             }
 

@@ -57,7 +57,7 @@ final class Upload
         $instance->dir = $dirInfo->getRealPath() . '/';
 
         $instance->client = ScopingHttpClient::forBaseUri(
-            $client ?? HttpClient::create(),
+            $client ?? HttpClient::create([], 50),
             substr_compare($baseUri, '/', -1) === 0 ? $baseUri : $baseUri . '/',
             [
                 'headers' => ['AccessKey' => $accessKey],

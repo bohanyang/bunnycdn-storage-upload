@@ -39,8 +39,8 @@ class Directory
             'headers' => ['AccessKey' => $accessKey],
             'timeout' => 31536000.0,
             'http_version' => '1.1'
-        ]);
-        
+        ], 50);
+
         $host = parse_url($baseUri, PHP_URL_SCHEME) . '://' . parse_url($baseUri, PHP_URL_HOST);
         $path = parse_url($baseUri, PHP_URL_PATH);
         
