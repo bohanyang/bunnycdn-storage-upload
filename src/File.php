@@ -7,6 +7,8 @@ use DateTimeZone;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
+use function Safe\substr;
+
 class File
 {
     public function __construct(
@@ -47,6 +49,11 @@ class File
         return $this->parent->relativePath() . $this->info['ObjectName'];
     }
 
+    public function objectPath(): string
+    {
+        return substr($this->info['Path'], strlen($this->info['StorageZoneName']) + 1) . $this->info['ObjectName'];
+    }
+
     public function url(): string
     {
         return $this->host() . $this->path();
@@ -62,8 +69,13 @@ class File
         return $this->parent;
     }
 
-    public function downloadRequest(string $savePath): ResponseInterface
+    public function requestDownload(string $savePath, string $baseUrl): ResponseInterface
     {
-        return $this->client->request('GET', $this->url(), ['buffer' => false, 'user_data' => $savePath]);
+        return $this->client->request('GET', $baseUrl . $this->objectPath(), ['buffer' => false, 'user_data' => $savePath]);
+    }
+
+    public function downloadOrigin(string $savePath)
+    {
+        return $this->requestDownload($savePath, $this->host() . '/' . $this->info['StorageZoneName'] . '/');
     }
 }

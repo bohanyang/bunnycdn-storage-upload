@@ -16,7 +16,7 @@ $queue = [];
 $queueCount = 0;
 $transfers = 32;
 
-$listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, $browser, &$queueCount) {
+$listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, $browser, &$queueCount, $argv) {
     foreach ($items as $item) {
         if ($item instanceof Directory) {
             $listUrls($item->children());
@@ -25,12 +25,12 @@ $listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $trans
             if (
                 file_exists($localPath) 
                 && filesize($localPath) === $item->size() 
-                && strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256()
+                //&& strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256()
             ) {
                 continue;
             }
 
-            $queue[] = $item->downloadRequest($localPath);
+            $queue[] = $item->requestDownload($localPath, $argv[3]);
             if (++$queueCount === $transfers) {
                 $browser->download($queue);
                 $queue = [];
