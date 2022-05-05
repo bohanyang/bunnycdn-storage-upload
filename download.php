@@ -37,7 +37,6 @@ $listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $trans
                 && filesize($localPath) === $item->size() 
                 && strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256()
             ) {
-                echo $localPath . "\n";
                 continue;
             }
 
