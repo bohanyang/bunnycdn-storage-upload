@@ -16,8 +16,18 @@ $queue = [];
 $queueCount = 0;
 $transfers = 32;
 
-$listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, $browser, &$queueCount, $argv) {
+$clearQueue = function () use (&$queue, $browser, &$queueCount) {
+    if ($queue !== []) {
+        $browser->download($queue);
+    }
+    
+    $queue = [];
+    $queueCount = 0;
+};
+
+$listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, &$queueCount, $argv, $clearQueue) {
     foreach ($items as $item) {
+        echo $item->relativePath() . "\n";
         if ($item instanceof Directory) {
             $listUrls($item->children());
         } elseif ($item instanceof File) {
@@ -25,19 +35,25 @@ $listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $trans
             if (
                 file_exists($localPath) 
                 && filesize($localPath) === $item->size() 
-                //&& strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256()
+                && strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256()
             ) {
+                echo $localPath . "\n";
                 continue;
             }
 
-            $queue[] = $item->requestDownload($localPath, $argv[3]);
+            if (empty($argv[3])) {
+                $queue[] = $item->downloadOrigin($localPath);
+            } else {
+                $queue[] = $item->requestDownload($localPath, $argv[3]);
+            }
+            
             if (++$queueCount === $transfers) {
-                $browser->download($queue);
-                $queue = [];
-                $queueCount = 0;
+                $clearQueue();
             }
         }
     }
+
+    $clearQueue();
 };
 
 $listUrls($browser->children());
