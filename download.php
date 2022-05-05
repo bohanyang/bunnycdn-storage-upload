@@ -27,7 +27,6 @@ $clearQueue = function () use (&$queue, $browser, &$queueCount) {
 
 $listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, &$queueCount, $argv, $clearQueue) {
     foreach ($items as $item) {
-        echo $item->relativePath() . "\n";
         if ($item instanceof Directory) {
             $listUrls($item->children());
         } elseif ($item instanceof File) {
