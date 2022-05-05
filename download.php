@@ -15,6 +15,7 @@ $localRoot = $argv[2];
 $queue = [];
 $queueCount = 0;
 $transfers = 32;
+$checkHash = false;
 
 $clearQueue = function () use (&$queue, $browser, &$queueCount) {
     if ($queue !== []) {
@@ -25,7 +26,7 @@ $clearQueue = function () use (&$queue, $browser, &$queueCount) {
     $queueCount = 0;
 };
 
-$listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, &$queueCount, $argv, $clearQueue) {
+$listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $transfers, &$queueCount, $argv, $clearQueue, $checkHash) {
     foreach ($items as $item) {
         if ($item instanceof Directory) {
             $listUrls($item->children());
@@ -34,7 +35,7 @@ $listUrls = function (array $items) use ($localRoot, &$listUrls, &$queue, $trans
             if (
                 file_exists($localPath) 
                 && filesize($localPath) === $item->size() 
-                && strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256()
+                && (!$checkHash || strtoupper(hash_file('sha256', $localPath, false)) === $item->sha256())
             ) {
                 continue;
             }
