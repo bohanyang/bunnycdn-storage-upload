@@ -9,7 +9,7 @@ Set `BUNNY` environment variable to your access key.
 Example usage:
 
 ```shell script
-git clone https://github.com/brentybh/bunnycdn-storage-upload.git && cd bunnycdn-storage-upload
+git clone https://github.com/bohanyang/bunnycdn-storage-upload.git && cd bunnycdn-storage-upload
 composer install --no-dev -o
 read -s BUNNY
 export BUNNY
